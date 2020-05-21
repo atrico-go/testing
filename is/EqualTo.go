@@ -1,8 +1,8 @@
 package is
 
 import (
-	"fmt"
 	. "github.com/atrico-go/testing/assert"
+	"github.com/atrico-go/testing/messages"
 )
 
 func EqualTo(expected interface{}) Matcher {
@@ -10,7 +10,7 @@ func EqualTo(expected interface{}) Matcher {
 		if actual == expected {
 			return true, ""
 		}
-		return false, fmt.Sprintf("Expected %v, but found %v", expected, actual)
+		return false, messages.ExpectedButActual(expected, actual)
 	}
 }
 
@@ -19,6 +19,6 @@ func NotEqualTo(expected interface{}) Matcher {
 		if actual != expected {
 			return true, ""
 		}
-		return false, fmt.Sprintf("Expected something other than %v", expected)
+		return false, messages.ExpectedOtherThan(expected)
 	}
 }
