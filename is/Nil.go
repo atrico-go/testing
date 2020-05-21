@@ -1,20 +1,21 @@
 package is
 
 import (
-	"fmt"
 	. "github.com/atrico-go/testing/assert"
+	"github.com/atrico-go/testing/messages"
 )
 
 var Nil Matcher = func(actual interface{}) (bool, string) {
 	if actual == nil {
 		return true, ""
 	}
-	return false, fmt.Sprintf("Expected nil, but found %v", actual)
+	return false, 		messages.ExpectedButActual("nil", actual)
+
 }
 
 var NotNil Matcher = func(actual interface{}) (bool, string) {
 	if actual != nil {
 		return true, ""
 	}
-	return false, "Expected something other than nil"
+	return false, messages.ExpectedOtherThan("nil")
 }
