@@ -5,17 +5,8 @@ import (
 	"github.com/atrico-go/testing/messages"
 )
 
-var Nil Matcher = func(actual interface{}) (bool, string) {
-	if actual == nil {
-		return true, ""
-	}
-	return false, 		messages.ExpectedButActual("nil", actual)
+var Nil = CreateMatcher(nilMatch, messages.ExpectedButActual("nil"))
 
-}
+var NotNil = CreateNotMatcher(nilMatch, messages.ExpectedOtherThan("nil"))
 
-var NotNil Matcher = func(actual interface{}) (bool, string) {
-	if actual != nil {
-		return true, ""
-	}
-	return false, messages.ExpectedOtherThan("nil")
-}
+var nilMatch = equalsMatch(nil)
