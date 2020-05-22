@@ -6,19 +6,13 @@ import (
 )
 
 func EqualTo(expected interface{}) Matcher {
-	return func(actual interface{}) (bool, string) {
-		if actual == expected {
-			return true, ""
-		}
-		return false, messages.ExpectedButActual(expected, actual)
-	}
+	return CreateMatcher(equalsMatch(expected), messages.ExpectedButActual(expected))
 }
 
 func NotEqualTo(expected interface{}) Matcher {
-	return func(actual interface{}) (bool, string) {
-		if actual != expected {
-			return true, ""
-		}
-		return false, messages.ExpectedOtherThan(expected)
-	}
+	return CreateNotMatcher(equalsMatch(expected), messages.ExpectedOtherThan(expected))
+}
+
+func equalsMatch(expected interface{}) MatcherImplementation {
+	return func(actual interface{}) bool {return actual == expected}
 }

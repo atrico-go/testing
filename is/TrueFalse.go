@@ -5,16 +5,6 @@ import (
 	"github.com/atrico-go/testing/messages"
 )
 
-var True Matcher = func(actual interface{}) (bool, string) {
-	if actual == true {
-		return true, ""
-	}
-	return false, messages.ExpectedButActual("true", actual)
-}
+var True = CreateMatcher(equalsMatch(true), messages.ExpectedButActual("true"))
 
-var False Matcher = func(actual interface{}) (bool, string) {
-	if actual == false {
-		return true, ""
-	}
-	return false, messages.ExpectedButActual("false", actual)
-}
+var False = CreateMatcher(equalsMatch(false), messages.ExpectedButActual("false"))
