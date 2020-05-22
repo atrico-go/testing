@@ -1,26 +1,32 @@
 package assert
 
 import (
+	"fmt"
 	"testing"
 )
 
-func Assert(t *testing.T) AssertWrapper {
-	return AssertWrapper{t}
+func Assert(t *testing.T) Wrapper {
+	return Wrapper{t}
 }
 
 // Wrapper around T to allow extension functions
-type AssertWrapper struct {
+type Wrapper struct {
 	T *testing.T
 }
 
-func (assert AssertWrapper) Fail(format string, args ...interface{}) {
+func (assert Wrapper) Fail(format string, args ...interface{}) {
 	assert.T.Errorf(format, args...)
+}
+
+func (assert Wrapper) Logf(format string, args ...interface{}) {
+	assert.T.Logf(format, args...)
 	assert.T.Fail()
 }
 
-func (assert AssertWrapper) That(actual interface{}, matcher Matcher) {
+func (assert Wrapper) That(actual interface{}, matcher Matcher, reasonFormat string, reasonArgs ...interface{}) {
 	pass, message := matcher(actual)
 	if !pass {
+		assert.Logf(fmt.Sprintf(reasonFormat, reasonArgs...))
 		assert.Fail(message)
 	}
 }
