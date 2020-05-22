@@ -29,7 +29,7 @@ func TestNotEqual_pass(t *testing.T) {
 func TestNotEqual_fail(t *testing.T) {
 	actual := 0
 	expected := 0
-	Assert(t).That(actual, NotEqualTo(expected), "Reason")
+	Assert(t).That(actual, NotEqualTo(expected), "")
 }
 
 func TestNil_pass(t *testing.T) {
