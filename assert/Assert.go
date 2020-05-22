@@ -2,6 +2,7 @@ package assert
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -26,8 +27,10 @@ func (assert Wrapper) Logf(format string, args ...interface{}) {
 func (assert Wrapper) That(actual interface{}, matcher Matcher, reasonFormat string, reasonArgs ...interface{}) {
 	pass, message := matcher(actual)
 	if !pass {
-		assert.Logf(fmt.Sprintf(reasonFormat, reasonArgs...))
-		assert.Fail(message)
+		output := fmt.Sprintf(reasonFormat, reasonArgs...)
+		sep := ""
+		if len(output) > 0 {sep = " => "}
+			assert.Fail(strings.Join([]string{output,message},sep))
 	}
 }
 
