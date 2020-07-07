@@ -16,12 +16,12 @@ type Wrapper struct {
 }
 
 func (assert Wrapper) Fail(format string, args ...interface{}) {
-	assert.T.Errorf(format, args...)
+	assert.Logf(format, args...)
 }
 
 func (assert Wrapper) Logf(format string, args ...interface{}) {
 	assert.T.Logf(format, args...)
-	assert.T.Fail()
+	assert.T.FailNow()
 }
 
 func (assert Wrapper) That(actual interface{}, matcher Matcher, reasonFormat string, reasonArgs ...interface{}) {
