@@ -1,9 +1,10 @@
 package is
 
 import (
+	"reflect"
+
 	. "github.com/atrico-go/testing/assert"
 	"github.com/atrico-go/testing/messages"
-	"reflect"
 )
 
 func Type(expected reflect.Type) Matcher {
@@ -15,5 +16,5 @@ func NotType(expected reflect.Type) Matcher {
 }
 
 func typeMatch(expected reflect.Type) MatcherImplementation {
-	return func(actual interface{}) bool {return reflect.TypeOf(actual) == expected}
+	return func(actual interface{}) bool { return reflect.TypeOf(actual) == expected }
 }

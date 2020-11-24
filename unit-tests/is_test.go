@@ -1,10 +1,11 @@
 package my_tests
 
 import (
-	. "github.com/atrico-go/testing/assert"
-	. "github.com/atrico-go/testing/is"
 	"reflect"
 	"testing"
+
+	. "github.com/atrico-go/testing/assert"
+	. "github.com/atrico-go/testing/is"
 )
 
 type TestType struct{}
@@ -30,6 +31,28 @@ func TestNotEqual_fail(t *testing.T) {
 	actual := 0
 	expected := 0
 	Assert(t).That(actual, NotEqualTo(expected), "")
+}
+
+func TestDeepEqual_pass(t *testing.T) {
+	actual := 0
+	expected := 0
+	Assert(t).That(actual, DeepEqualTo(expected), "")
+}
+func TestDeepEqual_fail(t *testing.T) {
+	actual := 0
+	expected := 1
+	Assert(t).That(actual, DeepEqualTo(expected), "Reason")
+}
+
+func TestNotDeepEqual_pass(t *testing.T) {
+	actual := 0
+	expected := 1
+	Assert(t).That(actual, NotDeepEqualTo(expected), "")
+}
+func TestNotDeepEqual_fail(t *testing.T) {
+	actual := 0
+	expected := 0
+	Assert(t).That(actual, NotDeepEqualTo(expected), "")
 }
 
 func TestNil_pass(t *testing.T) {
