@@ -14,5 +14,5 @@ func NotEqualTo(expected interface{}) Matcher {
 }
 
 func equalsMatch(expected interface{}) MatcherImplementation {
-	return func(actual interface{}) bool {return actual == expected}
+	return func(actual interface{}) bool { return actual == expected }
 }

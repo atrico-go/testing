@@ -29,8 +29,10 @@ func (assert Wrapper) That(actual interface{}, matcher Matcher, reasonFormat str
 	if !pass {
 		output := fmt.Sprintf(reasonFormat, reasonArgs...)
 		sep := ""
-		if len(output) > 0 {sep = " => "}
-			assert.Fail(strings.Join([]string{output,message},sep))
+		if len(output) > 0 {
+			sep = " => "
+		}
+		assert.Fail(strings.Join([]string{output, message}, sep))
 	}
 }
 
@@ -48,5 +50,5 @@ func CreateMatcher(match MatcherImplementation, message MessageProvider) Matcher
 	}
 }
 func CreateNotMatcher(match MatcherImplementation, message MessageProvider) Matcher {
-	return CreateMatcher(func (actual interface{}) bool {return !match(actual)}, message)
+	return CreateMatcher(func(actual interface{}) bool { return !match(actual) }, message)
 }
