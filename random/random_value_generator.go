@@ -10,6 +10,7 @@ type ValueGenerator interface {
 	Int() int
 	IntUpto(max int) int
 	IntBetween(min, max int) int
+	Bool() bool
 }
 
 func NewValueGenerator() ValueGenerator {
@@ -37,6 +38,7 @@ var defaultStringLength = 5
 type randomValueGenerator struct {
 	defaultStringLength int
 }
+
 
 func newDefaultGenerator() randomValueGenerator {
 	return randomValueGenerator{defaultStringLength}
@@ -74,6 +76,10 @@ func (r randomValueGenerator) IntBetween(min, max int) int {
 	return rand.Intn(max-min) + min
 }
 
+func (r randomValueGenerator) Bool() bool {
+	return rand.Intn(2) == 0
+}
+
 func (r *randomValueGenerator) WithDefaultStringLength(value int) ValueGeneratorBuilder {
 	r.defaultStringLength = value
 	return r
@@ -82,3 +88,4 @@ func (r *randomValueGenerator) WithDefaultStringLength(value int) ValueGenerator
 func (r *randomValueGenerator) Build() ValueGenerator {
 	return *r
 }
+
