@@ -12,7 +12,7 @@ func Type(expected reflect.Type) Matcher {
 }
 
 func NotType(expected reflect.Type) Matcher {
-	return CreateNotMatcher(typeMatch(expected), messages.ExpectedTypeButActual(expected))
+	return CreateNotMatcher(typeMatch(expected), messages.ExpectedTypeOtherThan(expected))
 }
 
 func typeMatch(expected reflect.Type) MatcherImplementation {
