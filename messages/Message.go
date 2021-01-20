@@ -24,6 +24,12 @@ func ExpectedOtherThan(expected interface{}) assert.MessageProvider {
 	}
 	return func(actual interface{}) string { return fmt.Sprintf(`Expected something other than "%v" (%T)`, expected, expected) }
 }
+func ExpectedOtherThanNoType(expected interface{}) assert.MessageProvider {
+	if expected == nil {
+		return func(actual interface{}) string { return `Expected something other than "nil"` }
+	}
+	return func(actual interface{}) string { return fmt.Sprintf(`Expected something other than "%v"`, expected) }
+}
 
 func ExpectedTypeOtherThan(expected reflect.Type) assert.MessageProvider {
 	return func(actual interface{}) string { return fmt.Sprintf(`Expected a type other than "%v"`, expected) }
