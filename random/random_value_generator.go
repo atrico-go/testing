@@ -162,12 +162,6 @@ func (r randomValueGenerator) createValue(rType reflect.Type) (value interface{}
 		if val, err = r.createValue(rType.Elem()); err == nil {
 			vVal.Elem().Set(reflect.ValueOf(val))
 		}
-		//if rValue.Kind() == reflect.Ptr {
-		//	var val interface{}
-		//	if val, err = r.createValue(rValue.Type().Elem()); err == nil {
-		//		rValue.Elem().Set(reflect.ValueOf(val))
-		//	}
-
 	case reflect.Slice:
 		vVal := reflect.MakeSlice(rType, r.defaultSliceLength, r.defaultSliceLength)
 		value = vVal.Interface()
