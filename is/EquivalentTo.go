@@ -11,24 +11,32 @@ import (
 )
 
 func EquivalentTo(expected interface{}) Matcher {
+	return EquivalentToC(expected, defaultEquality)
+}
+
+func NotEquivalentTo(expected interface{}) Matcher {
+	return NotEquivalentToC(expected, defaultEquality)
+}
+
+func EquivalentToC(expected interface{}, equality CustomEquality) Matcher {
 	exp := getExpectedSlice(expected)
 	return func(actual interface{}) (bool, string) {
 		if act, errMsg := getActualSlice(actual); act == nil {
 			return false, errMsg
 		} else {
-			return equivalentToMatcher(act, exp)
+			return equivalentToMatcher(act, exp, equality)
 		}
 	}
 }
 
-func NotEquivalentTo(expected interface{}) Matcher {
+func NotEquivalentToC(expected interface{}, equality CustomEquality) Matcher {
 	exp := getExpectedSlice(expected)
 	return func(actual interface{}) (bool, string) {
 		if act, errMsg := getActualSlice(actual); act == nil {
 			return false, errMsg
 
 		} else {
-			ok, _ := equivalentToMatcher(act, exp)
+			ok, _ := equivalentToMatcher(act, exp, equality)
 			if !ok {
 				return true, ""
 			}
@@ -51,12 +59,12 @@ func getActualSlice(actual interface{}) ([]interface{}, string) {
 	return nil, fmt.Sprintf(`Value is not a slice: "%v" (%T)`, actual, actual)
 }
 
-func equivalentToMatcher(actual, expected []interface{}) (bool, string) {
+func equivalentToMatcher(actual, expected []interface{}, equality CustomEquality) (bool, string) {
 	extra := makeIndexSet(actual)
 	missing := makeIndexSet(expected)
 	for actIdx, actItem := range actual {
 		for expIdx := range missing {
-			if reflect.DeepEqual(actItem, expected[expIdx]) {
+			if equality(actItem, expected[expIdx]) {
 				delete(extra, actIdx)
 				delete(missing, expIdx)
 				break

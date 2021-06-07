@@ -67,8 +67,8 @@ func Test_RandomValue(t *testing.T) {
 }
 
 type testStruct struct {
-	One string
-	Two int
+	One   string
+	Two   int
 	Three []string
 }
 

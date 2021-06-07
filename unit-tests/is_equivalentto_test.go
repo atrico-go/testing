@@ -43,6 +43,43 @@ func Test_Equivalent_WrongOrder(t *testing.T) {
 	Assert(t).That(msgN, is.EqualTo(fmt.Sprintf(`Expected something other than "%v"`, expected)), "Not Message")
 }
 
+func Test_Equivalent_CustomEquality_Equal(t *testing.T) {
+	// Arrange
+	actual := []int{1, 2, 3}
+	expected := []int{2, 4, 6}
+	customEquals := func(act, exp interface{}) bool { return act.(int) == (exp.(int) / 2) }
+	matcher := is.EquivalentToC(expected, customEquals)
+	matcherN := is.NotEquivalentToC(expected, customEquals)
+
+	// Act
+	result, _ := matcher(actual)
+	resultN, msgN := matcherN(actual)
+
+	// Assert
+	Assert(t).That(result, is.True, "Result")
+	Assert(t).That(resultN, is.False, "Not Result")
+	Assert(t).That(msgN, is.EqualTo(fmt.Sprintf(`Expected something other than "%v"`, expected)), "Not Message")
+
+}
+
+func Test_Equivalent_CustomEquality_WrongOrder(t *testing.T) {
+	// Arrange
+	actual := []int{1, 2, 3}
+	expected := []int{4, 2, 6}
+	customEquals := func(act, exp interface{}) bool { return act.(int) == (exp.(int) / 2) }
+	matcher := is.EquivalentToC(expected, customEquals)
+	matcherN := is.NotEquivalentToC(expected, customEquals)
+
+	// Act
+	result, _ := matcher(actual)
+	resultN, msgN := matcherN(actual)
+
+	// Assert
+	Assert(t).That(result, is.True, "Result")
+	Assert(t).That(resultN, is.False, "Not Result")
+	Assert(t).That(msgN, is.EqualTo(fmt.Sprintf(`Expected something other than "%v"`, expected)), "Not Message")
+}
+
 func Test_Equivalent_Duplicate(t *testing.T) {
 	// Arrange
 	actual := []int{1, 2, 3, 1}
@@ -125,6 +162,24 @@ func Test_Equivalent_DuplicateExtraAndMissingItems(t *testing.T) {
 	// Assert
 	Assert(t).That(result, is.False, "Result")
 	Assert(t).That(msg, is.EqualTo(fmt.Sprintf(`Expected (equivalent to) "%d", but found "%d", Extra items "%v", Missing items "%v"`, expected, actual, []int{4}, []int{3})), "Message")
+	Assert(t).That(resultN, is.True, "Not Result")
+}
+
+func Test_Equivalent_CustomEquality_DuplicateExtraAndMissingItems(t *testing.T) {
+	// Arrange
+	actual := []int{1, 2, 3, 4, 4}
+	expected := []int{2, 4, 6, 6, 8}
+	customEquals := func(act, exp interface{}) bool { return act.(int) == (exp.(int) / 2) }
+	matcher := is.EquivalentToC(expected, customEquals)
+	matcherN := is.NotEquivalentToC(expected, customEquals)
+
+	// Act
+	result, msg := matcher(actual)
+	resultN, _ := matcherN(actual)
+
+	// Assert
+	Assert(t).That(result, is.False, "Result")
+	Assert(t).That(msg, is.EqualTo(fmt.Sprintf(`Expected (equivalent to) "%d", but found "%d", Extra items "%v", Missing items "%v"`, expected, actual, []int{4}, []int{6})), "Message")
 	Assert(t).That(resultN, is.True, "Not Result")
 }
 
